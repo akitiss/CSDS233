@@ -14,8 +14,7 @@ public class hw1{
     }
 
     //runtime: O(n)
-    //actually takes n/2 but overall is O(n) because of coefficents
-    //still, recursive is MORE time efficent than iterative 
+    //both have the same runtime, however we can note that the time complexity of this is n/2 if we didn't remove hte coefficients 
     //will check if input is a palindrome or not recursively  
     static boolean palindromeRecursive(String input){
         input = input.toUpperCase(); //makes sure upper cases don't ruin the code
