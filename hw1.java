@@ -199,6 +199,8 @@ public class hw1{
             } else if (option.equals("7")){ //will stop the program 
                 System.out.println("Have a good day :)");
                 run = false;
+            } else {
+                System.out.println("Invalid input");
             }
         }
         
