@@ -12,57 +12,55 @@ public class BinarySearchTree{
 
     //inserts a node in the BST
     void insert(Node root, int key){
-        while (root!=null){ //while the node still exists 
-            if (key<root.key){ 
-                root = root.left; 
-            }else{
+        Node parent = null; //parent of node 
+  
+        while (root != null){ //find where the new node belongs 
+            parent = root;
+            if (key < root.key) {
+                root = root.left;
+            } else {
                 root = root.right;
             }
         }
-        root = new Node(key);
-    }
+ 
+        if (key < parent.key) { //insert the  new node 
+            parent.left = new Node(key);
+        } else {
+            parent.right = new Node(key);
+        }
+     }
+
     
     // preorder traversal of BST
     // node-left-right
     void preorderRec(Node root){
-        String bst = "";
+        Node current = root;
 
-        while (root != null){
-            bst += ("" + root.key);
-            root = null;
-
-            if (!(root.left == null)){
-                Node node = root.left;
-                bst += (" " + node);
-                node = null;
-                while (node.left != null){
-                    node = node.left;
-                    bst += ("" + root.key);
-                    node = null;
+        while (current != null) {
+            if (current.left == null) {
+                System.out.print(current.key + " "); // Print the current node's value.
+                current = current.right; // Move to the right subtree.
+            } else {
+                // Find the in-order predecessor of the current node.
+                Node predecessor = current.left;
+                while (predecessor.right != null && predecessor.right != current) {
+                    predecessor = predecessor.right;
                 }
-                while (node.right != null){
-                    node = node.right; 
-                    bst += ("" + root.key);
-                    node = null;
+
+                if (predecessor.right == null) {
+                    // Make the current node the right child of its in-order predecessor.
+                    predecessor.right = current;
+                    System.out.print(current.key + " "); // Print the current node's value.
+                    current = current.left; // Move to the left subtree.
+                } else {
+                    // Revert the change made in the previous if block.
+                    predecessor.right = null;
+                    current = current.right; // Move to the right subtree.
                 }
             }
-            if (root.right != null){
-                Node node = root.right;
-                bst += ("" + root.key);
-                node = null;
-                
-                while (node.left != null){
-                    node = node.left;
-                    bst += ("" + root.key);
-                    node = null;
-                }
-                while (node.right != null){
-                    node = node.right;
-                    bst += ("" + root.key);
-                    node = null;
-                }
-            } 
         }
+    
+
     //     // while (root != null){
     //     //     if (root.left == null) { //if left node is null, then go look at right node 
     //     //         bst.add(root.key);
@@ -117,7 +115,7 @@ public class BinarySearchTree{
         }         
 
         while (run){ //while the user hasn't quit, keep running 
-            System.out.print("\nBinary Search Tree Operations \n 1. insert \n 2. preorder traversal \n 3. sum of all keys \n 4. return kth biggest term \n 5. change tree root \n 6. quit \nChoose an option: ");
+            System.out.print("\nBinary Search Tree Operations \n 1. insert \n 2. preorder traversal \n 3. sum of all keys \n 4. return kth biggest term \n 6. quit \nChoose an option: ");
             String option = in.nextLine();
             
             if (option.equals("1")){ //runs through each function depending on what is entered
@@ -143,14 +141,6 @@ public class BinarySearchTree{
                     System.out.println("Inavlid input");
                 }
             } else if (option.equals("5")){
-                System.out.print("Enter new root node: ");
-                String input = in.nextLine();
-                if (!numChecker(input)){ //check if input is integer 
-                    tree.root = new Node(Integer.parseInt(input));
-                } else {
-                    System.out.println("Invalid input");
-                }
-            } else if (option.equals("6")){
                 run = false; 
             }
         }
