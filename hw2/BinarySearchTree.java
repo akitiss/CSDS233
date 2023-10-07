@@ -34,47 +34,40 @@ public class BinarySearchTree{
     // preorder traversal of BST
     // node-left-right
     void preorderRec(Node root){
-        Node current = root;
-
-        while (current != null) {
-            if (current.left == null) {
-                System.out.print(current.key + " "); // Print the current node's value.
-                current = current.right; // Move to the right subtree.
-            } else {
-                // Find the in-order predecessor of the current node.
-                Node predecessor = current.left;
-                while (predecessor.right != null && predecessor.right != current) {
-                    predecessor = predecessor.right;
+        String bst = "";
+        while (root != null) { 
+            if (root.left == null) { //if left node empty, check right node
+                bst += (root.key + " ");  
+                root = root.right;  
+            } else { //if left node has values 
+                
+                //find inorder predecessor (most right node in the left subtree)
+                Node current = root.left;
+                while (current.right != null && current.right != root) {
+                    current = current.right;
+                    System.out.println("MOST RIGHT: " + current.key);
                 }
 
-                if (predecessor.right == null) {
-                    // Make the current node the right child of its in-order predecessor.
-                    predecessor.right = current;
-                    System.out.print(current.key + " "); // Print the current node's value.
-                    current = current.left; // Move to the left subtree.
-                } else {
-                    // Revert the change made in the previous if block.
-                    predecessor.right = null;
-                    current = current.right; // Move to the right subtree.
+                if (current.right == null) { //if right is null, ///------ bro i am SOOOO CONFUSED ---
+                    current.right = root;
+                    System.out.println("WHAT THE " + root.key);
+                    bst += (root.key + " "); 
+                    root = root.left;
+                } else { 
+                    current.right = null;
+                    root = root.right; 
                 }
             }
         }
-    
-
-    //     // while (root != null){
-    //     //     if (root.left == null) { //if left node is null, then go look at right node 
-    //     //         bst.add(root.key);
-    //     //         root = root.right;
-    //     //     } else {
-    //     //         Node node = root.left;
-    //     //     }
-    //     // }
-    //     System.out.println(bst);
+        System.out.println(bst);
     }
     
     //find sum of all the keys of a BST
     int sum(Node root){
-        return 0;
+        if (root == null){ //base case 
+            return 0;
+        }
+        return root.key + sum(root.left) + sum(root.right);
     } 
     
     //find the k’th biggest element in BST
