@@ -1,6 +1,12 @@
-private class Node {
-    private int key;
-    private String data;
-    private Node left;
-    private Node right;
+public class Node {
+    int key;
+    Node left;
+    Node right;
+
+    //constructor
+    public Node(int input) {
+        key = input;
+        left = null;
+        right = null;
+    }
 }
