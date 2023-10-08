@@ -72,7 +72,29 @@ public class BinarySearchTree{
     
     //find the k’th biggest element in BST
     Node kthBiggest(Node root, int k){
-        return null;
+        int count = 0;
+        return kthBiggestHelper(root, k, count);
+    }
+
+    Node kthBiggestHelper(Node root, int k, int count){
+        if (root == null){
+            return null;
+        }
+        
+        Node big = kthBiggestHelper(root.right, k, count); //will keep going right until on the most right value 
+
+        if (big != null) { //if element is found in the right subtree, return it
+            return big;
+        }
+        
+        count++;
+
+        if (count==k){ //if count and k equal then value has been found 
+            return root;
+        }
+
+        return kthBiggestHelper(root.left, k, count); //if element isnt on the right node, traverse the left one
+
     }
 
     //method to check if input is a num from hw1
