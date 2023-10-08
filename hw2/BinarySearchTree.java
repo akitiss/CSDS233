@@ -34,32 +34,13 @@ public class BinarySearchTree{
     // preorder traversal of BST
     // node-left-right
     void preorderRec(Node root){
-        String bst = "";
-        while (root != null) { 
-            if (root.left == null) { //if left node empty, check right node
-                bst += (root.key + " ");  
-                root = root.right;  
-            } else { //if left node has values 
-                
-                //find inorder predecessor (most right node in the left subtree)
-                Node current = root.left;
-                while (current.right != null && current.right != root) {
-                    current = current.right;
-                    System.out.println("MOST RIGHT: " + current.key);
-                }
-
-                if (current.right == null) { //if right is null, ///------ bro i am SOOOO CONFUSED ---
-                    current.right = root;
-                    System.out.println("WHAT THE " + root.key);
-                    bst += (root.key + " "); 
-                    root = root.left;
-                } else { 
-                    current.right = null;
-                    root = root.right; 
-                }
-            }
+        if (root != null) { //if node isn't null print it out 
+            System.out.print(root.key + " "); //check node
+            
+            preorderRec(root.left); //then check left then right
+            preorderRec(root.right);
         }
-        System.out.println(bst);
+        
     }
     
     //find sum of all the keys of a BST
@@ -72,28 +53,37 @@ public class BinarySearchTree{
     
     //find the k’th biggest element in BST
     Node kthBiggest(Node root, int k){
-        int count = 0;
-        return kthBiggestHelper(root, k, count);
-    }
+        int count = 0; 
+        Node biggest = null;
 
-    Node kthBiggestHelper(Node root, int k, int count){
-        if (root == null){
-            return null;
+        while (root != null){
+            if (root.right == null){
+                count += 1; //means it is at the biggest non-checked element so add count 
+                if (count == k){ 
+                    biggest = root;
+                }
+                root = root.left; //means biggest element isn't on the right node to switch to left
+            } else {
+                //find sucessor (most left node on the subtree)
+                Node current = root.right;
+                while (current.left != null && current.left != root){
+                    current = current.left; 
+                }
+
+                if (current.left == null){//---------------------i dont understand ----------
+                    current.left = root; 
+                    root = root.right; //move to the right 
+                } else { //restoring tree
+                    current.left = null; 
+                    count += 1;
+                    if (count == k){
+                        biggest = root;
+                    }
+                    root = root.left; //check left child 
+                }
+            }
         }
-        
-        Node big = kthBiggestHelper(root.right, k, count); //will keep going right until on the most right value 
-
-        if (big != null) { //if element is found in the right subtree, return it
-            return big;
-        }
-        
-        count++;
-
-        if (count==k){ //if count and k equal then value has been found 
-            return root;
-        }
-
-        return kthBiggestHelper(root.left, k, count); //if element isnt on the right node, traverse the left one
+        return biggest;
 
     }
 
