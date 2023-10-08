@@ -40,7 +40,6 @@ public class BinarySearchTree{
             preorderRec(root.left); //then check left then right
             preorderRec(root.right);
         }
-        
     }
     
     //find sum of all the keys of a BST
@@ -49,7 +48,29 @@ public class BinarySearchTree{
             return 0;
         }
         return root.key + sum(root.left) + sum(root.right);
-    } 
+    }
+
+    //helper function to be used in kthBiggest
+    //return bst by inorder traversal as an array 
+    String[] inOrder(Node root){
+        String input = "";
+        input = inOrderString(root, input);
+        String[] splitList = input.split(","); //convert string into an array 
+        return splitList;
+    }
+
+    //helper method for inorder to get values in order as a string 
+    String inOrderString(Node root, String input){
+        if (root == null){
+            return input;
+        }
+
+        input = inOrderString(root.left, input); //check left then node then right 
+        input += root.key + ",";
+        input = inOrderString(root.right, input);
+
+        return input;
+    }
     
     //find the k’th biggest element in BST
     Node kthBiggest(Node root, int k){
