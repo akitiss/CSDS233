@@ -75,37 +75,26 @@ public class BinarySearchTree{
     //find the k’th biggest element in BST
     Node kthBiggest(Node root, int k){
         int count = 0; 
-        Node biggest = null;
+        String[] inOrder = this.inOrder(root);
 
-        while (root != null){
-            if (root.right == null){
-                count += 1; //means it is at the biggest non-checked element so add count 
-                if (count == k){ 
-                    biggest = root;
-                }
-                root = root.left; //means biggest element isn't on the right node to switch to left
-            } else {
-                //find sucessor (most left node on the subtree)
-                Node current = root.right;
-                while (current.left != null && current.left != root){
-                    current = current.left; 
-                }
-
-                if (current.left == null){//---------------------i dont understand ----------
-                    current.left = root; 
-                    root = root.right; //move to the right 
-                } else { //restoring tree
-                    current.left = null; 
-                    count += 1;
-                    if (count == k){
-                        biggest = root;
-                    }
-                    root = root.left; //check left child 
-                }
-            }
+        if (inOrder.length < k){ //make sure value is in bounds 
+            System.out.println("Inavlid input");
+            return null;
         }
-        return biggest;
 
+        int key = Integer.parseInt(inOrder[inOrder.length-k]); //determine value of key 
+        return findNode(root, key);
+    }
+
+    //find node given key 
+    Node findNode(Node root, int key){
+        if (root.key == key || root == null){ //check is key and node match or if root is null
+            return root;
+        }
+        if (key < root.key) {  //check left node if key is less than current node
+            return findNode(root.left, key);
+        }
+        return findNode(root.right, key); //else check right 
     }
 
     //method to check if input is a num from hw1
@@ -141,7 +130,7 @@ public class BinarySearchTree{
         }         
 
         while (run){ //while the user hasn't quit, keep running 
-            System.out.print("\nBinary Search Tree Operations \n 1. insert \n 2. preorder traversal \n 3. sum of all keys \n 4. return kth biggest term \n 6. quit \nChoose an option: ");
+            System.out.print("\nBinary Search Tree Operations \n 1. insert \n 2. preorder traversal \n 3. sum of all keys \n 4. return kth biggest term \n 5. quit \nChoose an option: ");
             String option = in.nextLine();
             
             if (option.equals("1")){ //runs through each function depending on what is entered
