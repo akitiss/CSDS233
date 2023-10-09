@@ -3,7 +3,7 @@ public class Node {
     Node left;
     Node right;
 
-    //constructor
+    //constructor for BST
     public Node(int input) {
         key = input;
         left = null;
