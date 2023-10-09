@@ -2,8 +2,8 @@
 //1. Give code.
 
 public class LLString{
-    private StringNode head;
-    private StringNode tail;
+    private StringNode lst_head;
+    private StringNode lst_tail;
     private int theSize;
 
     //constructors
@@ -15,17 +15,17 @@ public class LLString{
 
     //adds node at the end of the LLString
     void addStringNode(StringNode node){
-        if (this.head==null){
-            this.head = new StringNode(""); //-------- cuz isnt the head only supposed to refrence stuff, not actually contains stuff?????
-            this.tail = node;   
-            head.next = tail; //set tail and head pointing to each other 
-            tail.prev = head;
+        if (this.lst_head==null){
+            this.lst_head = new StringNode(""); //-------- cuz isnt the head only supposed to refrence stuff, not actually contains stuff?????
+            this.lst_tail = node;   
+            this.lst_head.next = this.lst_tail; //set tail and head pointing to each other 
+            this.lst_tail.prev = this.lst_head;
         }
         //moves node to the end of the list by being placed after the tail
-        node.prev = this.tail; //set node next and prev 
+        node.prev = this.lst_tail; //set node next and prev 
         node.next = null;
-        tail.next = node; //make tail point to node 
-        tail = node; //new tail 
+        this.lst_tail.next = node; //make tail point to node 
+        this.lst_tail = node; //new tail 
     }
 
     //prints out the linked list from head to tail 
@@ -36,19 +36,80 @@ public class LLString{
         }
     }
 
-    //swap node with its sucessor 
-    void swapNodeSucessor(StringNode x){
-        StringNode trav = this.head; //start at first node 
-        while (trav != null) { //move down until reach the end 
-            if (trav == x) {  
-                StringNode temp = x.next;
-                x.next = x; 
-                x.next.prev = temp;
-                return; 
+    //swap node with its successor 
+    // void swapNodeSucessor(StringNode x){
+    //     if (x == null || x.next == null){ //if at the end of the llstring, don't swap 
+    //         return;
+    //     }
+
+    //     //create variables to easily reference the nodes that need references changed 
+    //     StringNode sucessor = x.next;
+    //     StringNode predecessor = x.prev;
+    //     StringNode postSucessor = x.next.next;
+
+    //     if (this.lst_head.next == x){ //if x is the first term on the linked list
+    //         this.lst_head.next = sucessor;
+    //         sucessor.prev = this.lst_head;
+    //     } else { //if x is not the first term 
+    //         sucessor.prev = predecessor;
+    //         predecessor.next = sucessor;
+    //     }
+
+    //     x.prev = sucessor; //point x and sucessor to each other  
+    //     sucessor.next = x; 
+
+    //     if (sucessor == this.lst_tail){ //if sucessor is the tail, make x the new tail 
+    //         x.next = null;
+    //         this.lst_tail = x;
+    //     } else if (postSucessor == this.lst_tail){ //if postSucessor is the tail
+    //         this.lst_tail.prev = x;
+    //         x.next = this.lst_tail;
+    //     } else { //if sucessor is not the tail 
+    //         x.next = postSucessor;
+    //         postSucessor.prev = x;
+    //     }
+    // }  
+
+        void swapNodeSucessor(StringNode x){
+            //create variables to easily reference the nodes that need references changed 
+            StringNode sucessor = x.next;
+            StringNode predecessor = x.prev;
+            StringNode postSucessor = x.next.next;
+
+            //case 0: x is tail or is null
+            if (x == null || x.next == null){
+                return;
+            } //case 1: head and tail not predecessor, x, sucessor, or postSucessor   
+            else if (predecessor != this.lst_head && x != this.lst_tail && sucessor != this.lst_tail && postSucessor != this.lst_tail){
+                predecessor.next = sucessor;                
+                x.next = postSucessor;
+                x.prev = sucessor;
+                sucessor.next = x;
+                sucessor.prev = predecessor;
+                postSucessor.prev = x;
+            } else if (predecessor == this.lst_head){ //case 2: head is the predecessor
+                this.lst_head.next = sucessor;
+                x.next = postSucessor;
+                x.prev = sucessor;
+                sucessor.next = x;
+                sucessor.prev = this.lst_head;
+                postSucessor.prev = x;
+            } else if (sucessor == this.lst_tail){ //case 3: sucessor is the tail 
+                predecessor.next = sucessor;
+                x.next = null;
+                x.prev = sucessor;
+                this.lst_tail = x;
+                sucessor.prev = predecessor;
+                sucessor.next = x;
+            } else if (postSucessor == this.lst_tail){  //case 4: postSucessor is the tail
+                predecessor.next = sucessor;
+                x.next = postSucessor;
+                x.prev = this.lst_tail;
+                sucessor.next = x;
+                sucessor.prev = predecessor;
+                this.lst_tail.prev = x;
             }
-            trav = trav.next;
         }
-    }  
 
     public static void main(String[] args) {
         //set up the linked list to test on 
@@ -65,24 +126,29 @@ public class LLString{
         doublyLL.addStringNode(sn4);
         doublyLL.addStringNode(sn5);
 
-        //check if the refrences are right 
-        System.out.print('\n');
-        System.out.print(head.next.str);
-        System.out.print(sn1.next.str);
-        System.out.print(sn2.next.str);
-        System.out.print(sn3.next.str);
-        System.out.print(sn4.next.str);
-        System.out.print('\n');
-        System.out.print(sn2.prev.str);
-        System.out.print(sn3.prev.str);
-        System.out.print(sn4.prev.str);
-        System.out.print(sn5.prev.str);
-        System.out.print(tail.prev.str);
-
-
         //test swap function 
-        doublyLL.swapNodeSucessor(sn3);
-        // doublyLL.printLLString(sn1);
+        LLString l1 = doublyLL;
+        LLString l2 = doublyLL;
+        LLString l3 = doublyLL;
+        LLString l4 = doublyLL;
+        LLString l5 = doublyLL;
+        System.out.print("original:");
+        doublyLL.printLLString(doublyLL.lst_head);
+        l1.swapNodeSucessor(sn1);
+        System.out.print("\nswap : " + sn1.str + " ->");
+        l1.printLLString(l1.lst_head);
+        l2.swapNodeSucessor(sn2);
+        System.out.print("\nswap : " + sn2.str + " ->");
+        l2.printLLString(l2.lst_head);
+        l3.swapNodeSucessor(sn3);
+        System.out.print("\nswap : " + sn3.str + " ->");
+        l3.printLLString(l3.lst_head);
+        l4.swapNodeSucessor(sn4);
+        System.out.print("\nswap : " + sn4.str + " ->");
+        l4.printLLString(l4.lst_head);
+        l5.swapNodeSucessor(sn5);
+        System.out.print("\nswap : " + sn5.str + " ->");
+        l5.printLLString(l5.lst_head);
 
     }
 }
