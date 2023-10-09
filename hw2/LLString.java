@@ -1,16 +1,11 @@
 //Design an algorithm to find the node X and swap it with its successor node
-//1. Give code.
-
 public class LLString{
     private StringNode lst_head;
     private StringNode lst_tail;
-    private int theSize;
 
-    //constructors
-    public LLString(){
+    public LLString(){ //constructor
         lst_head = null;
         lst_tail = null;
-        theSize = 0;
     }
 
     //adds node at the end of the LLString
@@ -30,13 +25,14 @@ public class LLString{
 
     //prints out the linked list from head to tail 
     void printLLString(StringNode node){ 
-        if (node != null){
+        if (node != null){ //goes until the end 
             System.out.print(node.str + " ");
             printLLString(node.next);
         }
     }
 
     // swap node with its successor 
+    // note: i used a diagram to help write the code that is provided in the written compoenent submission 
     void swapNodeSucessor(StringNode x){
         if (x == null || x.next == null){ //if at the end of the llstring, don't swap 
             return;
@@ -72,7 +68,8 @@ public class LLString{
 
     public static void main(String[] args) {
         //set up the 4 linked lists to test the 4 different scenarios 
-        StringNode sn11 = new StringNode("a");
+        //using the same llstring wouldn't work since the list would already be modified, so i created 4 complelty new llstrings
+        StringNode sn11 = new StringNode("a"); //creating all the string nodes
         StringNode sn12 = new StringNode("b");
         StringNode sn13 = new StringNode("c");
         StringNode sn14 = new StringNode("d");
@@ -89,12 +86,12 @@ public class LLString{
         StringNode sn43 = new StringNode("c");
         StringNode sn44 = new StringNode("d");
 
-        LLString l1 = new LLString();
+        LLString l1 = new LLString(); //creating the LLStrings
         LLString l2 = new LLString();
         LLString l3 = new LLString();
         LLString l4 = new LLString();
         
-        l1.addStringNode(sn11);
+        l1.addStringNode(sn11); //adding the nodes to the LLString 
         l1.addStringNode(sn12);
         l1.addStringNode(sn13);
         l1.addStringNode(sn14);
@@ -128,9 +125,10 @@ public class LLString{
         l4.printLLString(l4.lst_head);
     }
 }
-//2. Explain the major concept of your algorithm. 
-    //it switches the next and prev references of the 4 nodes affected by the swap: predecessor, x, sucessor, and postSucessor. and, if any of these values are the head or tail, there are different operations run    
-//3. Give an example of running your algorithm.
+
+//Explain the major concept of your algorithm. 
+    //it switches the next and prev references of the 4 nodes affected by the swap: predecessor, x, sucessor, and postSucessor. and, if any of these values are the head or tail, there are different operations run to make sure there is no null value    
+//Give an example of running your algorithm.
     //examples are given in the main 
-//4. Give and justify its runtime.
+//Give and justify its runtime.
     //runtime O(1). all the components of the function take no longer than O(1) time. I am just swapping the next and prev values.
