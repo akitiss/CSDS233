@@ -77,7 +77,7 @@ public class BinarySearchTree{
         int count = 0; 
         String[] inOrder = this.inOrder(root);
 
-        if (inOrder.length < k){ //make sure value is in bounds 
+        if (inOrder.length < k || k <= 0){ //make sure value is in bounds 
             System.out.println("Inavlid input");
             return null;
         }
@@ -98,7 +98,7 @@ public class BinarySearchTree{
     }
 
     //method to check if input is a num from hw1
-    //return true if input is not a number  
+    //return true if input is not a postive 3number  
     static boolean numChecker(String input){
         if (input==""){ //if empty string, not a number 
             return true;
@@ -151,7 +151,9 @@ public class BinarySearchTree{
                 String input = in.nextLine();
                 if (!numChecker(input)){ //check if input is integer
                     Node k = tree.kthBiggest(tree.root, Integer.parseInt(input));
-                    System.out.println("" + k.key + " is the " + input + " biggest term in the bst");
+                    if (k!=null){
+                        System.out.println("" + k.key + " is the " + input + " biggest term in the bst");
+                    }
                 } else {
                     System.out.println("Inavlid input");
                 }
