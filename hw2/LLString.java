@@ -36,102 +36,86 @@ public class LLString{
         }
     }
 
-    //swap node with its successor 
-    // void swapNodeSucessor(StringNode x){
-    //     if (x == null || x.next == null){ //if at the end of the llstring, don't swap 
-    //         return;
-    //     }
-
-    //     //create variables to easily reference the nodes that need references changed 
-    //     StringNode sucessor = x.next;
-    //     StringNode predecessor = x.prev;
-    //     StringNode postSucessor = x.next.next;
-
-    //     if (this.lst_head.next == x){ //if x is the first term on the linked list
-    //         this.lst_head.next = sucessor;
-    //         sucessor.prev = this.lst_head;
-    //     } else { //if x is not the first term 
-    //         sucessor.prev = predecessor;
-    //         predecessor.next = sucessor;
-    //     }
-
-    //     x.prev = sucessor; //point x and sucessor to each other  
-    //     sucessor.next = x; 
-
-    //     if (sucessor == this.lst_tail){ //if sucessor is the tail, make x the new tail 
-    //         x.next = null;
-    //         this.lst_tail = x;
-    //     } else if (postSucessor == this.lst_tail){ //if postSucessor is the tail
-    //         this.lst_tail.prev = x;
-    //         x.next = this.lst_tail;
-    //     } else { //if sucessor is not the tail 
-    //         x.next = postSucessor;
-    //         postSucessor.prev = x;
-    //     }
-    // }  
-
-        void swapNodeSucessor(StringNode x){
-            //create variables to easily reference the nodes that need references changed 
-            StringNode sucessor = x.next;
-            StringNode predecessor = x.prev;
-            StringNode postSucessor = x.next.next;
-
-            //case 0: x is tail or is null
-            if (x == null || x.next == null){
-                return;
-            } //case 1: head and tail not predecessor, x, sucessor, or postSucessor   
-            else if (predecessor != this.lst_head && x != this.lst_tail && sucessor != this.lst_tail && postSucessor != this.lst_tail){
-                predecessor.next = sucessor;                
-                x.next = postSucessor;
-                x.prev = sucessor;
-                sucessor.next = x;
-                sucessor.prev = predecessor;
-                postSucessor.prev = x;
-            } else if (predecessor == this.lst_head){ //case 2: head is the predecessor
-                this.lst_head.next = sucessor;
-                x.next = postSucessor;
-                x.prev = sucessor;
-                sucessor.next = x;
-                sucessor.prev = this.lst_head;
-                postSucessor.prev = x;
-            } else if (sucessor == this.lst_tail){ //case 3: sucessor is the tail 
-                predecessor.next = sucessor;
-                x.next = null;
-                x.prev = sucessor;
-                this.lst_tail = x;
-                sucessor.prev = predecessor;
-                sucessor.next = x;
-            } else if (postSucessor == this.lst_tail){  //case 4: postSucessor is the tail
-                predecessor.next = sucessor;
-                x.next = postSucessor;
-                x.prev = this.lst_tail;
-                sucessor.next = x;
-                sucessor.prev = predecessor;
-                this.lst_tail.prev = x;
-            }
+    // swap node with its successor 
+    void swapNodeSucessor(StringNode x){
+        if (x == null || x.next == null){ //if at the end of the llstring, don't swap 
+            return;
         }
+
+        //create variables to easily reference the nodes that need references changed 
+        StringNode sucessor = x.next;
+        StringNode predecessor = x.prev;
+        StringNode postSucessor = x.next.next;
+
+        if (this.lst_head.next == x){ //if x is the first term on the linked list
+            this.lst_head.next = sucessor;
+            sucessor.prev = this.lst_head;
+        } else { //if x is not the first term 
+            sucessor.prev = predecessor;
+            predecessor.next = sucessor;
+        }
+
+        x.prev = sucessor; //point x and sucessor to each other  
+        sucessor.next = x; 
+
+        if (sucessor == this.lst_tail){ //if sucessor is the tail, make x the new tail 
+            x.next = null;
+            this.lst_tail = x;
+        } else if (postSucessor == this.lst_tail){ //if postSucessor is the tail
+            this.lst_tail.prev = x;
+            x.next = this.lst_tail;
+        } else { //if sucessor is not the tail 
+            x.next = postSucessor;
+            postSucessor.prev = x;
+        }
+    }  
 
     public static void main(String[] args) {
         //set up the linked list to test on 
-        LLString doublyLL = new LLString();
-        StringNode sn1 = new StringNode("a");
-        StringNode sn2 = new StringNode("b");
-        StringNode sn3 = new StringNode("c");
-        StringNode sn4 = new StringNode("d");
-        StringNode sn5 = new StringNode("e");
+        StringNode sn11 = new StringNode("a");
+        StringNode sn12 = new StringNode("b");
+        StringNode sn13 = new StringNode("c");
+        StringNode sn14 = new StringNode("d");
+        StringNode sn21 = new StringNode("a");
+        StringNode sn22 = new StringNode("b");
+        StringNode sn23 = new StringNode("c");
+        StringNode sn24 = new StringNode("d");
+        StringNode sn31 = new StringNode("a");
+        StringNode sn32 = new StringNode("b");
+        StringNode sn33 = new StringNode("c");
+        StringNode sn34 = new StringNode("d");
+        StringNode sn41 = new StringNode("a");
+        StringNode sn42 = new StringNode("b");
+        StringNode sn43 = new StringNode("c");
+        StringNode sn44 = new StringNode("d");
+
+        LLString l1 = new LLString();
+        LLstring l2 = new LLString();
+        LLString l3 = new LLString();
+        LLString l4 = new LLString();
         
-        doublyLL.addStringNode(sn1);
-        doublyLL.addStringNode(sn2);
-        doublyLL.addStringNode(sn3);
-        doublyLL.addStringNode(sn4);
-        doublyLL.addStringNode(sn5);
+        l1.addStringNode(sn1);
+        l1.addStringNode(sn2);
+        l1.addStringNode(sn3);
+        l1.addStringNode(sn4);
+        l2.addStringNode(sn1);
+        l2.addStringNode(sn2);
+        l2.addStringNode(sn3);
+        l2.addStringNode(sn4);
+        l3.addStringNode(sn1);
+        l3.addStringNode(sn2);
+        l3.addStringNode(sn3);
+        l3.addStringNode(sn4);
+        l4.addStringNode(sn1);
+        l4.addStringNode(sn2);
+        l4.addStringNode(sn3);
+        l4.addStringNode(sn4);
 
         //test swap function 
         LLString l1 = doublyLL;
         LLString l2 = doublyLL;
         LLString l3 = doublyLL;
         LLString l4 = doublyLL;
-        LLString l5 = doublyLL;
         System.out.print("original:");
         doublyLL.printLLString(doublyLL.lst_head);
         l1.swapNodeSucessor(sn1);
@@ -146,18 +130,11 @@ public class LLString{
         l4.swapNodeSucessor(sn4);
         System.out.print("\nswap : " + sn4.str + " ->");
         l4.printLLString(l4.lst_head);
-        l5.swapNodeSucessor(sn5);
-        System.out.print("\nswap : " + sn5.str + " ->");
-        l5.printLLString(l5.lst_head);
-
     }
 }
 //2. Explain the major concept of your algorithm. 
-    //it loops through the list, and when it reaches x, it sets x as its own sucessor and replaces itself with its old sucessor kept in temp   
+    //it switches the next and prev references of the 4 nodes affected by the swap: predecessor, x, sucessor, and postSucessor. and, if any of these values are the head or tail, there are different operations run    
 //3. Give an example of running your algorithm.
-    //linked-list(addresses not written): [head, "wow", "bow", "hi", "yay", "okay"]
-    //input: partA("hi"); 
-    //result: returns "hi"; linked list: [head, "wow", "bow", "yay", "hi", "okay"]
-    //will switch the "hi" and "yay"
+    //examples are given in the main 
 //4. Give and justify its runtime.
-    //runtime O(n). it'll take O(n) time to find the node X. and it'll take O(1) time to swap node x and its sucessor node
+    //runtime O(1). all the components of the function take no longer than O(1) time. I am just swapping the next and prev values.
