@@ -71,7 +71,7 @@ public class LLString{
     }  
 
     public static void main(String[] args) {
-        //set up the linked list to test on 
+        //set up the 4 linked lists to test the 4 different scenarios 
         StringNode sn11 = new StringNode("a");
         StringNode sn12 = new StringNode("b");
         StringNode sn13 = new StringNode("c");
@@ -90,45 +90,41 @@ public class LLString{
         StringNode sn44 = new StringNode("d");
 
         LLString l1 = new LLString();
-        LLstring l2 = new LLString();
+        LLString l2 = new LLString();
         LLString l3 = new LLString();
         LLString l4 = new LLString();
         
-        l1.addStringNode(sn1);
-        l1.addStringNode(sn2);
-        l1.addStringNode(sn3);
-        l1.addStringNode(sn4);
-        l2.addStringNode(sn1);
-        l2.addStringNode(sn2);
-        l2.addStringNode(sn3);
-        l2.addStringNode(sn4);
-        l3.addStringNode(sn1);
-        l3.addStringNode(sn2);
-        l3.addStringNode(sn3);
-        l3.addStringNode(sn4);
-        l4.addStringNode(sn1);
-        l4.addStringNode(sn2);
-        l4.addStringNode(sn3);
-        l4.addStringNode(sn4);
+        l1.addStringNode(sn11);
+        l1.addStringNode(sn12);
+        l1.addStringNode(sn13);
+        l1.addStringNode(sn14);
+        l2.addStringNode(sn21);
+        l2.addStringNode(sn22);
+        l2.addStringNode(sn23);
+        l2.addStringNode(sn24);
+        l3.addStringNode(sn31);
+        l3.addStringNode(sn32);
+        l3.addStringNode(sn33);
+        l3.addStringNode(sn34);
+        l4.addStringNode(sn41);
+        l4.addStringNode(sn42);
+        l4.addStringNode(sn43);
+        l4.addStringNode(sn44);
 
         //test swap function 
-        LLString l1 = doublyLL;
-        LLString l2 = doublyLL;
-        LLString l3 = doublyLL;
-        LLString l4 = doublyLL;
         System.out.print("original:");
-        doublyLL.printLLString(doublyLL.lst_head);
-        l1.swapNodeSucessor(sn1);
-        System.out.print("\nswap : " + sn1.str + " ->");
         l1.printLLString(l1.lst_head);
-        l2.swapNodeSucessor(sn2);
-        System.out.print("\nswap : " + sn2.str + " ->");
+        l1.swapNodeSucessor(sn11);
+        System.out.print("\nswap : " + sn11.str + " ->");
+        l1.printLLString(l1.lst_head);
+        l2.swapNodeSucessor(sn22);
+        System.out.print("\nswap : " + sn22.str + " ->");
         l2.printLLString(l2.lst_head);
-        l3.swapNodeSucessor(sn3);
-        System.out.print("\nswap : " + sn3.str + " ->");
+        l3.swapNodeSucessor(sn33);
+        System.out.print("\nswap : " + sn33.str + " ->");
         l3.printLLString(l3.lst_head);
-        l4.swapNodeSucessor(sn4);
-        System.out.print("\nswap : " + sn4.str + " ->");
+        l4.swapNodeSucessor(sn44);
+        System.out.print("\nswap : " + sn44.str + " ->");
         l4.printLLString(l4.lst_head);
     }
 }
