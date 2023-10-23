@@ -21,7 +21,7 @@ public class AVLTree<T extends Comparable<T>> {
             this.key = key;
             this.left = left;
             this.right = right;
-            this.height = 0;
+            this.height = 1;
         }
     }
 
@@ -203,6 +203,9 @@ public class AVLTree<T extends Comparable<T>> {
         k2.height = max(height(k2.left), height(k2.right)) + 1;
         k1.height = max(height(k1.left), height(k1.right)) + 1;
 
+        System.out.println("ROTATION POST HEIGHTS: " + k2.key + " height " + height(k2));
+        System.out.println("ROTATION POST HEIGHTS: " + k1.key + " height " + height(k1));
+
         return k2;
     }
 
@@ -270,11 +273,6 @@ public class AVLTree<T extends Comparable<T>> {
                 tree.left = insert(tree.left, key);
             } else if (cmp > 0) { // Case: The key should be inserted into the "right subtree of the tree"
                 tree.right = insert(tree.right, key);
-                /*
-                 * Write your code here
-                 * If the AVL tree is out of balance after the node is inserted, adjust it
-                 * accordingly.
-                 */
             } else { // cmp==0
                 System.out.println("Insert Fail: Cannot insert the same element!");
             }
@@ -283,6 +281,7 @@ public class AVLTree<T extends Comparable<T>> {
         //since this is recursive it will balance the nodes from the bottom then to the top 
         tree.height = max(height(tree.left), height(tree.right)) + 1;
         int balance = height(tree.right) - height(tree.left);
+        print();
         
         // System.out.println("\nTHIS IS BALANCE: " + balance); 
         // preOrder(tree);
@@ -292,7 +291,6 @@ public class AVLTree<T extends Comparable<T>> {
             if (key.compareTo(tree.right.key) < 0){
                 //case 3d: add left subtree to y's right child
                 tree = rightLeftRotation(tree); 
-                System.out.println("DOING A RIGHT LEFT ROTATION");
             } else {
                 //case 3b: add right subtree to y's right child 
                 // System.out.println("I AM ROTATING LEFT " + balance);
@@ -300,18 +298,17 @@ public class AVLTree<T extends Comparable<T>> {
                 System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
                 System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
                 tree = leftLeftRotation(tree);
-                
-                print();
+                System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
+                System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
+
             }
         } else if (balance <= -2){
             if (key.compareTo(tree.left.key) < 0){
                 //case 3a: add left subtree to y's left child 
                 tree = rightRightRotation(tree);
-                System.out.println("DOING A RIGHT RIGHT ROTATION");
             } else {
                 //case 3d: add left subtree to y's right child 
                 tree = leftRightRotation(tree);
-                System.out.println("DOING A LEFT RIGHT ROTATION");
             }
         }   
 
