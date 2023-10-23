@@ -193,17 +193,17 @@ public class AVLTree<T extends Comparable<T>> {
      *
      * return: the root node after rotated
      */
-    private AVLTreeNode<T> leftLeftRotation(AVLTreeNode<T> k2) {
-        AVLTreeNode<T> k1;
+    private AVLTreeNode<T> leftLeftRotation(AVLTreeNode<T> k1) {
+        AVLTreeNode<T> k2;
 
-        k1 = k2.left;
-        k2.left = k1.right;
-        k1.right = k2;
+        k2 = k1.right;
+        k1.right = k2.left;
+        k2.left = k1;
 
         k2.height = max(height(k2.left), height(k2.right)) + 1;
-        k1.height = max(height(k1.left), k2.height) + 1;
+        k1.height = max(height(k1.left), height(k1.right)) + 1;
 
-        return k1;
+        return k2;
     }
 
     /*
@@ -214,12 +214,12 @@ public class AVLTree<T extends Comparable<T>> {
     private AVLTreeNode<T> rightRightRotation(AVLTreeNode<T> k1) {
         AVLTreeNode<T> k2;
 
-        k2 = k1.right;
-        k1.right = k2.left;
-        k2.left = k1;
+        k2 = k1.left;
+        k1.left = k2.right;
+        k2.right = k1;
 
         k1.height = max(height(k1.left), height(k1.right)) + 1;
-        k2.height = max(height(k2.right), k1.height) + 1;
+        k2.height = max(height(k2.left), height(k2.right)) + 1;
 
         return k2;
     }
@@ -230,9 +230,9 @@ public class AVLTree<T extends Comparable<T>> {
      * return: the root node after rotated
      */
     private AVLTreeNode<T> leftRightRotation(AVLTreeNode<T> k3) {
-        k3.left = rightRightRotation(k3.left);
+        k3.left = leftLeftRotation(k3.left);
 
-        return leftLeftRotation(k3);
+        return rightRightRotation(k3);
     }
 
     /*
@@ -241,9 +241,9 @@ public class AVLTree<T extends Comparable<T>> {
      * return: the root node after rotated
      */
     private AVLTreeNode<T> rightLeftRotation(AVLTreeNode<T> k1) {
-        k1.right = leftLeftRotation(k1.right);
+        k1.right = rightRightRotation(k1.right);
 
-        return rightRightRotation(k1);
+        return leftLeftRotation(k1);
     }
 
     /*
@@ -279,30 +279,41 @@ public class AVLTree<T extends Comparable<T>> {
                 System.out.println("Insert Fail: Cannot insert the same element!");
             }
         }
+        
+        //since this is recursive it will balance the nodes from the bottom then to the top 
+        tree.height = max(height(tree.left), height(tree.right)) + 1;
+        int balance = height(tree.right) - height(tree.left);
+        
+        // System.out.println("\nTHIS IS BALANCE: " + balance); 
+        // preOrder(tree);
+        // System.out.println("========= CURRENT KEY: " + tree.key);
 
-        if (tree.right != null && tree.left != null) {
-            //since this is recursive it will balance the nodes from the bottom then to the top 
-            tree.height = max(height(tree.left), height(tree.right)) + 1;
-            int balance = height(tree.right) - height(tree.left);
-
-            if (balance >= 2){
-                if (key.compareTo(tree.right.key) < 0){
-                    //case 3d: add left subtree to y's right child
-                    tree = rightLeftRotation(tree); 
-                } else {
-                    //case 3b: add right subtree to y's right child 
-                    tree = leftLeftRotation(tree);
-                }
-            } else if (balance <= -2){
-                if (key.compareTo(tree.left.key) < 0){
-                    //case 3a: add left subtree to y's left child 
-                    tree = rightRightRotation(tree);
-                } else {
-                    //case 3d: add left subtree to y's right child 
-                    tree = leftRightRotation(tree);
-                }
-            }   
-        }
+        if (balance >= 2){
+            if (key.compareTo(tree.right.key) < 0){
+                //case 3d: add left subtree to y's right child
+                tree = rightLeftRotation(tree); 
+                System.out.println("DOING A RIGHT LEFT ROTATION");
+            } else {
+                //case 3b: add right subtree to y's right child 
+                // System.out.println("I AM ROTATING LEFT " + balance);
+                System.out.println("\nTHE KEY : " + tree.key);
+                System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
+                System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
+                tree = leftLeftRotation(tree);
+                
+                print();
+            }
+        } else if (balance <= -2){
+            if (key.compareTo(tree.left.key) < 0){
+                //case 3a: add left subtree to y's left child 
+                tree = rightRightRotation(tree);
+                System.out.println("DOING A RIGHT RIGHT ROTATION");
+            } else {
+                //case 3d: add left subtree to y's right child 
+                tree = leftRightRotation(tree);
+                System.out.println("DOING A LEFT RIGHT ROTATION");
+            }
+        }   
 
         return tree;
     }
