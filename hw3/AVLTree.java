@@ -154,7 +154,7 @@ public class AVLTree<T extends Comparable<T>> {
      * root
      */
     private AVLTreeNode<T> minimum(AVLTreeNode<T> tree) {
-        while (tree != null){
+        while (tree.left != null){
             tree = tree.left; //go as left as you can to find min number 
         }
         return tree;
@@ -174,7 +174,7 @@ public class AVLTree<T extends Comparable<T>> {
      * root
      */
     private AVLTreeNode<T> maximum(AVLTreeNode<T> tree) {
-        while (tree != null){
+        while (tree.right != null){
             tree = tree.right; //go as right as you can to find max number
         }
         return tree;
@@ -267,9 +267,9 @@ public class AVLTree<T extends Comparable<T>> {
             int cmp = key.compareTo(tree.key);
 
             if (cmp < 0) { // Case: The key should be inserted into the "left subtree of the tree"
-                insert(tree.left, key);
+                tree.left = insert(tree.left, key);
             } else if (cmp > 0) { // Case: The key should be inserted into the "right subtree of the tree"
-                insert(tree.right, key);
+                tree.right = insert(tree.right, key);
                 /*
                  * Write your code here
                  * If the AVL tree is out of balance after the node is inserted, adjust it
@@ -280,7 +280,29 @@ public class AVLTree<T extends Comparable<T>> {
             }
         }
 
-        tree.height = max(height(tree.left), height(tree.right)) + 1;
+        if (tree.right != null && tree.left != null) {
+            //since this is recursive it will balance the nodes from the bottom then to the top 
+            tree.height = max(height(tree.left), height(tree.right)) + 1;
+            int balance = height(tree.right) - height(tree.left);
+
+            if (balance >= 2){
+                if (key.compareTo(tree.right.key) < 0){
+                    //case 3d: add left subtree to y's right child
+                    tree = rightLeftRotation(tree); 
+                } else {
+                    //case 3b: add right subtree to y's right child 
+                    tree = leftLeftRotation(tree);
+                }
+            } else if (balance <= -2){
+                if (key.compareTo(tree.left.key) < 0){
+                    //case 3a: add left subtree to y's left child 
+                    tree = rightRightRotation(tree);
+                } else {
+                    //case 3d: add left subtree to y's right child 
+                    tree = leftRightRotation(tree);
+                }
+            }   
+        }
 
         return tree;
     }
