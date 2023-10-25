@@ -21,7 +21,7 @@ public class AVLTree<T extends Comparable<T>> {
             this.key = key;
             this.left = left;
             this.right = right;
-            this.height = 1;
+            this.height = 0;
         }
     }
 
@@ -97,8 +97,8 @@ public class AVLTree<T extends Comparable<T>> {
         if (tree != null) {
             //left-right-node
             postOrder(tree.left);
-            System.out.print(tree.key + " ");
             postOrder(tree.right);
+            System.out.print(tree.key + " ");
         }
     }
 
@@ -189,7 +189,25 @@ public class AVLTree<T extends Comparable<T>> {
     }
 
     /*
-     * LL：(a left rotation)。
+     * RR(a right rotation)。
+     *
+     * return: the root node after rotated
+     */
+    private AVLTreeNode<T> rightRightRotation(AVLTreeNode<T> k2) {
+        AVLTreeNode<T> k1;
+
+        k1 = k2.left;
+        k2.left = k1.right;
+        k1.right = k2;
+
+        k2.height = max(height(k2.left), height(k2.right)) + 1;
+        k1.height = max(height(k1.left), k2.height) + 1;
+
+        return k1;
+    }
+
+    /*
+     * LL: (left roration)。
      *
      * return: the root node after rotated
      */
@@ -200,29 +218,8 @@ public class AVLTree<T extends Comparable<T>> {
         k1.right = k2.left;
         k2.left = k1;
 
-        k2.height = max(height(k2.left), height(k2.right)) + 1;
         k1.height = max(height(k1.left), height(k1.right)) + 1;
-
-        System.out.println("ROTATION POST HEIGHTS: " + k2.key + " height " + height(k2));
-        System.out.println("ROTATION POST HEIGHTS: " + k1.key + " height " + height(k1));
-
-        return k2;
-    }
-
-    /*
-     * RR: (right roration)。
-     *
-     * return: the root node after rotated
-     */
-    private AVLTreeNode<T> rightRightRotation(AVLTreeNode<T> k1) {
-        AVLTreeNode<T> k2;
-
-        k2 = k1.left;
-        k1.left = k2.right;
-        k2.right = k1;
-
-        k1.height = max(height(k1.left), height(k1.right)) + 1;
-        k2.height = max(height(k2.left), height(k2.right)) + 1;
+        k2.height = max(height(k2.right), k1.height) + 1;
 
         return k2;
     }
@@ -281,7 +278,7 @@ public class AVLTree<T extends Comparable<T>> {
         //since this is recursive it will balance the nodes from the bottom then to the top 
         tree.height = max(height(tree.left), height(tree.right)) + 1;
         int balance = height(tree.right) - height(tree.left);
-        print();
+        // print();
         
         // System.out.println("\nTHIS IS BALANCE: " + balance); 
         // preOrder(tree);
@@ -293,13 +290,12 @@ public class AVLTree<T extends Comparable<T>> {
                 tree = rightLeftRotation(tree); 
             } else {
                 //case 3b: add right subtree to y's right child 
-                // System.out.println("I AM ROTATING LEFT " + balance);
-                System.out.println("\nTHE KEY : " + tree.key);
-                System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
-                System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
+                // System.out.println("\nTHE KEY : " + tree.key);
+                // System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
+                // System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
                 tree = leftLeftRotation(tree);
-                System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
-                System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
+                // System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
+                // System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
 
             }
         } else if (balance <= -2){
