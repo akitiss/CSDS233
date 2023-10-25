@@ -332,38 +332,54 @@ public class AVLTree<T extends Comparable<T>> {
 
         int cmp = z.key.compareTo(tree.key);
         if (cmp < 0) { // The node to be deleted is in the "left subtree of tree"
-
-            /*
-             * Write your code here
-             * If the AVL tree is out of balance after the node is deleted, adjust it
-             * accordingly.
-             */
+            tree.left = remove(tree.left, z);
 
         } else if (cmp > 0) { // The node to be deleted is in the "right subtree of tree"
-
-            /*
-             * Write your code here
-             * If the AVL tree is out of balance after the node is deleted, adjust it
-             * accordingly.
-             */
+            tree.right = remove(tree.right, z); 
 
         } else {
             // If both the left and right children of "tree" are not empty
             if ((tree.left != null) && (tree.right != null)) {
-                if (height(tree.left) > height(tree.right)) {
-                    /*
-                     * Write your code here
-                     */
+                //replace with inorder sucessor 
+                AVLTreeNode<T> min = minimum(tree.right);
+                tree.key = min.key;
+                tree.right = remove(tree.right, min);
 
-                } else {
-                    /*
-                     * Write your code here
-                     */
-                }
             } else {
                 AVLTreeNode<T> tmp = tree;
                 tree = (tree.left != null) ? tree.left : tree.right;
                 tmp = null;
+            }
+        }
+
+        if (tree == null){
+            return tree;
+        }
+        
+        //rotate if not in balance 
+        tree.height = max(height(tree.left), height(tree.right)) + 1;
+        int balance = height(tree.right) - height(tree.left);
+        
+        int leftBalance = 0;
+        int rightBalance = 0;
+        if (tree.left != null){
+            leftBalance = height(tree.left.right) - height(tree.left.left);
+        } 
+        if (tree.right != null){
+            rightBalance = height(tree.right.right) - height(tree.right.left);
+        }
+
+        if (balance <= 2){
+            if (leftBalance > 0) {
+                tree = leftRightRotation(tree); 
+            } else {
+                tree = leftLeftRotation(tree);
+            }
+        } else if (balance <= -2){
+            if (rightBalance < 0){
+                tree = rightLeftRotation(tree);
+            } else {
+                tree = rightRightRotation(tree);
             }
         }
 
@@ -374,7 +390,8 @@ public class AVLTree<T extends Comparable<T>> {
         AVLTreeNode<T> z;
 
         if ((z = search(mRoot, key)) != null)
-            mRoot = remove(mRoot, z);
+            
+             remove(mRoot, z);
     }
 
     /*
