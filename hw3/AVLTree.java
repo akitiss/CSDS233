@@ -278,27 +278,16 @@ public class AVLTree<T extends Comparable<T>> {
         //since this is recursive it will balance the nodes from the bottom then to the top 
         tree.height = max(height(tree.left), height(tree.right)) + 1;
         int balance = height(tree.right) - height(tree.left);
-        // print();
         
-        // System.out.println("\nTHIS IS BALANCE: " + balance); 
-        // preOrder(tree);
-        // System.out.println("========= CURRENT KEY: " + tree.key);
-
-        if (balance >= 2){
+        if (balance >= 2){ //too many nodes on right child 
             if (key.compareTo(tree.right.key) < 0){
                 //case 3d: add left subtree to y's right child
                 tree = rightLeftRotation(tree); 
             } else {
                 //case 3b: add right subtree to y's right child 
-                // System.out.println("\nTHE KEY : " + tree.key);
-                // System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
-                // System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
                 tree = leftLeftRotation(tree);
-                // System.out.println("TREE LEFT HEIGHT: " + height(tree.left));
-                // System.out.println("TREE RIGHT HEIGHT: " + height(tree.right));
-
             }
-        } else if (balance <= -2){
+        } else if (balance <= -2){ //too many nodes on left child 
             if (key.compareTo(tree.left.key) < 0){
                 //case 3a: add left subtree to y's left child 
                 tree = rightRightRotation(tree);
@@ -352,7 +341,7 @@ public class AVLTree<T extends Comparable<T>> {
             }
         }
 
-        if (tree == null){
+        if (tree == null){ //if tree had only one node 
             return tree;
         }
         
@@ -360,26 +349,31 @@ public class AVLTree<T extends Comparable<T>> {
         tree.height = max(height(tree.left), height(tree.right)) + 1;
         int balance = height(tree.right) - height(tree.left);
         
+        //need to check balance of the left and right tree 
         int leftBalance = 0;
         int rightBalance = 0;
-        if (tree.left != null){
+        if (tree.left != null){ //calculate here so no null errors 
             leftBalance = height(tree.left.right) - height(tree.left.left);
         } 
         if (tree.right != null){
             rightBalance = height(tree.right.right) - height(tree.right.left);
         }
 
-        if (balance <= 2){
-            if (leftBalance > 0) {
-                tree = leftRightRotation(tree); 
-            } else {
+        if (balance >= 2){ //too many nodes on right child 
+            if (rightBalance >= 0) { 
+                //case 3ab: single rotation 
                 tree = leftLeftRotation(tree);
-            }
-        } else if (balance <= -2){
-            if (rightBalance < 0){
-                tree = rightLeftRotation(tree);
             } else {
+                //case 3c: double rotation with opposite balance factor 
+                tree = rightLeftRotation(tree);
+            }
+        } else if (balance <= -2){ //too many nodes on left child 
+            if (leftBalance >= 0){
+                //case 3ab: single rotation 
                 tree = rightRightRotation(tree);
+            } else {
+                //case 3c: double rotation with opposite balance factor 
+                tree = leftRightRotation(tree);
             }
         }
 
