@@ -85,7 +85,10 @@ public class HW4_axl1039{
                 int h2mod = h1mod;
                 for (int i = 1; table[h2mod] != null; i++){ //repeat until mod isn't null, increment i in the meanwhile 
                     h2mod = (h1mod + i*(7 - (input % 7))) % tableSize;
-                    text += "\n   -> (" + h1mod + " + " + i + "*(7 - " + input + " % 7))" + " % " + tableSize + " = " + h2mod; 
+                    if (i > 1) { //stylistic choice to indent if repeats
+                        text += "\n                ";   
+                    }
+                    text += " -> (" + h1mod + " + " + i + "*(7 - " + input + " % 7))" + " % " + tableSize + " = " + h2mod; 
                     //print out each collision operation 
                 }
 
@@ -104,19 +107,19 @@ public class HW4_axl1039{
         System.out.println("---------------------------PART 1: Linear Probing---------------------------"); 
         System.out.println("Array: [14,17,18,3,8,1,18,11,13,20]");
 
-        HashTable table1 = new HashTable(10);
         int[] arr1 = {14,17,18,3,8,1,18,11,13,20};
+        HashTable table1 = new HashTable(arr1.length);
         String steps1 = table1.linearProbing(arr1);
         System.out.println(steps1);
         System.out.print("\nFinal table: ");
         table1.print();
 
-
-        System.out.println("---------------------------PART 2: Double Hashing---------------------------"); 
+        System.out.println();
+        System.out.println("\n---------------------------PART 2: Double Hashing---------------------------"); 
         System.out.println("Array: [2,12,22,32,42,52,62,72,82,92,14,17,18,3,8,1,18,11,13,20]");
         
-        HashTable table2 = new HashTable(20);
         int[] arr2 = {2,12,22,32,42,52,62,72,82,92,14,17,18,3,8,1,18,11,13,20};
+        HashTable table2 = new HashTable(arr2.length);
         String steps2 = table2.doubleHash(arr2);
         System.out.println(steps2);
         System.out.print("\nFinal table: ");
