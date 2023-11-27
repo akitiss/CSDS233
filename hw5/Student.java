@@ -1,7 +1,7 @@
-public class student{
+public class Student{
     //private vars since don't want this information to be easily accessible
-    private String name //student name 
-    private int balance //current balance in the students account
+    private String name; //student name 
+    private int balance; //current balance in the students account
 
     //constructor of student 
     public Student(String name, int balance){
@@ -17,9 +17,6 @@ public class student{
     //update balance of student 
     public void updateBalance(int newAmount){ 
         this.balance = newAmount; 
-    }
-    
-
-
+    }    
 
 }
