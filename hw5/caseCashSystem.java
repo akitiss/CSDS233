@@ -12,10 +12,11 @@ public class caseCashSystem{
      */
     public List<String> runSimulation(List<String> commands){
         List<String> output = new ArrayList<>();
+        students = new ArrayList<>();
 
         for (int i = 0; i<commands.size(); i++){ //loop through each command 
             String c = commands.get(i);
-            String[] cArray = c.split(","); //split commands into an array with each component 
+            String[] cArray = c.split(", "); //split commands into an array with each component 
 
             String command = cArray[0]; 
 
@@ -81,25 +82,50 @@ public class caseCashSystem{
         return output;
     }   
 
+    //return Student with name 
+    public Student getStudent(String name){
+        for (Student student : students) { //loop through list to search for if student name exists
+            if (student.getName().equals(name)) {
+                return student;
+            }
+        }
+
+        return null;
+
+    }
+
+    //prints all current students
+    public void printStudents(){
+        System.out.print("[ ");
+        for (Student element: students) { //loops through each student 
+            System.out.print(element.getName());
+            System.out.print(" ");
+        }
+        System.out.print("]");
+    }
+
     /*
     Initializes a student with a name and an initial account balance. This should return true if the
     student has not been created already, and return false if a student with this name already exists.
     InitialBalance cannot be negative. Corresponds to "INIT, name, initialBalance".
     */
     public boolean init(String name, int initialBalance){
-        return false;
+        if (getStudent(name) == null){ //if equals null, then that name doesn't exist yet 
+            Student stu = new Student(name, initialBalance); //add student
+            students.add(stu); 
+            return true;
+        } 
+        return false; //return false since that means name exists 
     } 
 
-    //return Student with name 
-    public Student getStudent(String name){
-        return students.get(students.indexOf(name));
-
-    }
 
     //return balnce of given student 
     public int getBalance(String name){
         Student stu = getStudent(name);
 
+        if (stu == null){ //if student doesnt exist
+            return -1;
+        }
         return stu.getBalance();
     }
 
@@ -153,6 +179,20 @@ public class caseCashSystem{
 
 
     public static void main(String[] args) {
-        
+        caseCashSystem caseCase = new caseCashSystem(); //initlialize system and students
+
+        List<String> inputs = List.of("INIT, Sanji, 200",
+                                        "INIT, Zoro, 0",
+                                        "INIT, Zoro, 400",
+                                        "INIT, Law, 400",
+                                        "GET, Sanji",
+                                        "GET, Zoro",
+                                        "GET, Law"
+                                        );
+
+        List<String> outputs = caseCase.runSimulation(inputs);
+        System.out.println(outputs);
+        caseCase.printStudents();
+         
     }
 }

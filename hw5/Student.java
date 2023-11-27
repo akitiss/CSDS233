@@ -19,4 +19,9 @@ public class Student{
         this.balance = newAmount; 
     }    
 
+    //get name of student
+    public String getName(){
+        return this.name;
+    }
+
 }
