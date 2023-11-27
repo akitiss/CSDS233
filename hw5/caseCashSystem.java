@@ -11,8 +11,8 @@ public class caseCashSystem{
     previous list of students (starts clean).
      */
     public List<String> runSimulation(List<String> commands){
-        List<String> output = new ArrayList<>();
-        students = new ArrayList<>();
+        List<String> output = new ArrayList<>(); 
+        students = new ArrayList<>(); //create new set of students each time this is run 
 
         for (int i = 0; i<commands.size(); i++){ //loop through each command 
             String c = commands.get(i);
@@ -135,7 +135,13 @@ public class caseCashSystem{
     all. Corresponds to "DEPOSIT, studentA, amount".
     */
     public boolean deposit(Student student, int amount){
-        return false;
+        if (amount < 0){ //negative input
+            return false;
+        } else { //positive input
+            int newBalance = student.getBalance() + amount; //add current amouht + deposit amount 
+            student.updateBalance(newBalance);
+            return true;
+        }
     }
 
     /*
@@ -187,7 +193,12 @@ public class caseCashSystem{
                                         "INIT, Law, 400",
                                         "GET, Sanji",
                                         "GET, Zoro",
-                                        "GET, Law"
+                                        "GET, Law",
+                                        "DEPOSIT, Zoro, 1",
+                                        "DEPOSIT, Zoro, -1",
+                                        "DEPOSIT, Zoro, 0",
+                                        "GET, Zoro"
+                                        
                                         );
 
         List<String> outputs = caseCase.runSimulation(inputs);
