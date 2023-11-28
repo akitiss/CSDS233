@@ -268,9 +268,9 @@ public class caseCashSystem{
             return;
         } 
 
-        int split = partition(arr, first, last); //get index of pivot  
+        int split = partition(arr, first, last); //get index of split  
         
-        quickSort(arr, first, split - 1); //left and right
+        quickSort(arr, first, split - 1); //left and right subarrays
         quickSort(arr, split + 1, last);
 
     }
@@ -356,46 +356,6 @@ public class caseCashSystem{
         List<String> outputs = caseCase.runSimulation(inputs);
         System.out.println(outputs);
 
-        inputs = List.of("SORT, name", //[]
-                            "INIT, Sanji, 200", //true
-                            "SORT, name", //["Sanji"]
-                            "INIT, Law, 400", //true
-                            "SORT, name", //["Law, Sanji"]
-                            "INIT, Zoro, 0", //true
-                            "INIT, Buggy, 0", //true
-                            "INIT, Luffy, 500", //true
-                            "SORT, name" //["Buggy, Law, Luffy, Sanji, Zoro"]
-                            );
-
-        outputs = caseCase.runSimulation(inputs);
-        System.out.println(outputs);
-
-        inputs = List.of("SORT, balance", //[]
-                            "INIT, Sanji, 200", //true
-                            "SORT, balance", //["Sanji"]
-                            "INIT, Law, 500", //true
-                            "SORT, balance", //["Sanji, Law"]
-                            "INIT, Zoro, 0", //true
-                            "INIT, Buggy, 300", //true
-                            "INIT, Luffy, 100", //true
-                            "SORT, balance" //["Zoro, Luffy, Sanji, Buggy, Law"]
-                            );
-
-        outputs = caseCase.runSimulation(inputs);
-        System.out.println(outputs);
-
-        inputs = List.of("INIT, Tammy, 200",
-                            "INIT, Kim, 300",
-                            "INIT, Quyen, 400",
-                            "SORT, name",
-                            "SORT, balance",
-                            "TRANSFER, Kim, Tammy, 100",
-                            "SORT, name",
-                            "SORT balance");
-
-
-        outputs = caseCase.runSimulation(inputs);
-        System.out.println(outputs);
 
     }
 }
