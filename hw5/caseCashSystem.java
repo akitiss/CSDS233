@@ -67,8 +67,8 @@ public class caseCashSystem{
 
                 String sortedString = "[";
                     for (int j = 0; j < sortedList.size(); j++){ //loop through the list and add to a string 
-                        sortedString += sortedList.get(i);
-                        if (!(j < sortedList.size()-1)){ //if not the last element 
+                        sortedString += sortedList.get(j);
+                        if (j < sortedList.size()-1){ //if not the last element 
                             sortedString += ", ";
                         }
                     }
@@ -83,7 +83,7 @@ public class caseCashSystem{
     }   
 
     //return Student with name 
-    public Student getStudent(String name){
+    private Student getStudent(String name){
         for (Student student : students) { //loop through list to search for if student name exists
             if (student.getName().equals(name)) {
                 return student;
@@ -103,6 +103,15 @@ public class caseCashSystem{
         }
         System.out.print("]");
     }
+
+    //prints out all elements in a list
+    private void printList(List<String> l){
+        System.out.print("[ ");
+        for (String element: l) { //loops through each student 
+            System.out.print(element);
+            System.out.print(" ");
+        }
+        System.out.print("]");    }
 
     /*
     Initializes a student with a name and an initial account balance. This should return true if the
@@ -152,8 +161,33 @@ public class caseCashSystem{
     amount".
     */
     public boolean transfer(Student studentA, Student studentB, int amount){
-        return false;
+        if (amount < 0){ //if negative 
+            return false;
+        } else if (studentA.getBalance() - amount < 0){ //see if studentA has enough in their account to transfer 
+            return false;
+        }
+        //if can transfer 
+        int balanceA = studentA.getBalance() - amount; //subtract amount from a  
+        int balanceB = studentB.getBalance() + amount; //add amount to b 
+        studentA.updateBalance(balanceA);
+        studentB.updateBalance(balanceB);
+        return true;
     }
+
+
+    //will return first character of the students name given Student 
+    private char getChar(Student stu){
+        String name = stu.getName();
+        char c = name.charAt(0);
+        return Character.toUpperCase(c); //uppercase every char so if a name isn't capitlized it wont get sorted wrong alphabetically
+    }
+
+    //will return first character of students name given index of the student in students
+    private char getChar(int index){
+        Student stu = students.get(index);
+        return getChar(stu); 
+    }
+
 
     /*
     Returns a list of student names in alphabetical order. You are not allowed to use the Java sorting
@@ -161,7 +195,70 @@ public class caseCashSystem{
     not implemented, significant points will be deducted. Corresponds to "SORT, name".
     */
     public List<String> sortName(){
-        return null;
+        if (students.size() <= 1){ //if student list is empty or only one element
+            return null;
+        } else {
+            List<String> arr = new ArrayList<>();
+            for (Student stu : students){
+                arr.add(stu.getName());
+            }
+            mergeSort(arr, 0, students.size()-1);
+
+            return arr; 
+        }
+    }
+
+    //helper function to do the merge sort recursivly 
+    private void mergeSort(List<String> arr, int start, int end){
+        if (start >= end){ //base case 
+            return;
+        }
+        int middle = (start+end)/2; //get middle
+
+        mergeSort(arr, start, middle); //split in half 
+        mergeSort(arr, middle+1, end);
+
+        merge(arr, start, middle, middle+1, end); //merge when done splitting 
+
+    }
+
+    private void merge(List<String> arr, int leftStart, int leftEnd, int rightStart, int rightEnd){
+
+        int l = leftStart; // left sublist index
+        int r = rightStart; // right sublist index
+
+        List<String> temp = new ArrayList<>();
+
+        while (l <= leftEnd && r <= rightEnd) { //before reaches end of sublists
+            String name = "";
+            if (getChar(l) <= getChar(r)){ //check if left sublist element is less than or equal to right sublist element 
+                name = arr.get(l); //get name of student, get String since the List is of Strings 
+                l++;
+            } else { //if right sublist element is less than 
+                name = arr.get(r);
+                r++;
+            }
+            temp.add(name);
+
+        }
+
+        while (l <= leftEnd){ //copy rest of element on left sublist 
+            temp.add(arr.get(l));
+            l++;
+        }
+
+        while (r <= rightEnd){ //copy rest of element on right sublist 
+            temp.add(arr.get(r));
+            r++;
+        }
+
+        int t = 0; 
+        for (String name : temp) { //copy all values from temp list to arr  
+            arr.set(leftStart + t, name);
+            t++;
+        }
+
+        
     }
 
     /*
@@ -187,23 +284,30 @@ public class caseCashSystem{
     public static void main(String[] args) {
         caseCashSystem caseCase = new caseCashSystem(); //initlialize system and students
 
-        List<String> inputs = List.of("INIT, Sanji, 200",
-                                        "INIT, Zoro, 0",
-                                        "INIT, Zoro, 400",
-                                        "INIT, Law, 400",
-                                        "GET, Sanji",
-                                        "GET, Zoro",
-                                        "GET, Law",
-                                        "DEPOSIT, Zoro, 1",
-                                        "DEPOSIT, Zoro, -1",
-                                        "DEPOSIT, Zoro, 0",
-                                        "GET, Zoro"
-                                        
+        List<String> inputs = List.of("INIT, Sanji, 200", //true
+                                        "INIT, Law, 400", //true
+                                        "INIT, Zoro, 0", //true
+                                        "INIT, Zoro, 400", //false
+                                        "INIT, Luffy, 500", //true
+                                        "GET, Sanji", //200
+                                        "GET, Zoro", //0
+                                        "GET, Law", //400
+                                        "DEPOSIT, Zoro, 1", //true
+                                        "DEPOSIT, Zoro, -1", //false
+                                        "DEPOSIT, Zoro, 0", //true
+                                        "GET, Zoro", //1
+                                        "TRANSFER, Zoro, Sanji, 10", //false
+                                        "TRANSFER, Zoro, Sanji, -10", //false
+                                        "GET, Sanji", //200
+                                        "GET, Zoro", //1
+                                        "TRANSFER, Sanji, Zoro, 100", //true
+                                        "GET, Sanji", //100
+                                        "GET, Zoro", //101
+                                        "SORT, name" //["Law, Luffy, Sanji, Zoro"]
                                         );
 
         List<String> outputs = caseCase.runSimulation(inputs);
         System.out.println(outputs);
-        caseCase.printStudents();
          
     }
 }
