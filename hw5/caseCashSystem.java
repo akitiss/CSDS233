@@ -174,21 +174,6 @@ public class caseCashSystem{
         return true;
     }
 
-
-    //will return first character of the students name given Student 
-    private char getChar(Student stu){
-        String name = stu.getName();
-        char c = name.charAt(0);
-        return Character.toUpperCase(c); //uppercase every char so if a name isn't capitlized it wont get sorted wrong alphabetically
-    }
-
-    //will return first character of students name given index of the student in students
-    private char getChar(int index){
-        Student stu = students.get(index);
-        return getChar(stu); 
-    }
-
-
     /*
     Returns a list of student names in alphabetical order. You are not allowed to use the Java sorting
     functions, and should write your own. This function should utilize merge sort. If merge sort is
@@ -230,16 +215,16 @@ public class caseCashSystem{
         List<String> temp = new ArrayList<>();
 
         while (l <= leftEnd && r <= rightEnd) { //before reaches end of sublists
-            String name = "";
-            if (getChar(l) <= getChar(r)){ //check if left sublist element is less than or equal to right sublist element 
-                name = arr.get(l); //get name of student, get String since the List is of Strings 
+            String nameL = arr.get(l);
+            String nameR = arr.get(r);
+
+            if (nameL.compareTo(nameR) <= 0){ //check if left sublist element is less than or equal to right sublist element 
+                temp.add(nameL); //add nameL  
                 l++;
             } else { //if right sublist element is less than 
-                name = arr.get(r);
+                temp.add(nameR);
                 r++;
             }
-            temp.add(name);
-
         }
 
         while (l <= leftEnd){ //copy rest of element on left sublist 
@@ -287,6 +272,7 @@ public class caseCashSystem{
         List<String> inputs = List.of("INIT, Sanji, 200", //true
                                         "INIT, Law, 400", //true
                                         "INIT, Zoro, 0", //true
+                                        "INIT, Buggy, 0", //true
                                         "INIT, Zoro, 400", //false
                                         "INIT, Luffy, 500", //true
                                         "GET, Sanji", //200
