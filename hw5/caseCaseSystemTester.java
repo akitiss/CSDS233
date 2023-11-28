@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class caseCaseSystemTester{
+
+    @Test
     public void sortNameTester(){
+        
         caseCashSystem caseCase = new caseCashSystem(); //initlialize system and students
 
         //test 1
@@ -57,6 +60,7 @@ public class caseCaseSystemTester{
 
     }
 
+    @Test
     public void sortBalanceTester(){
         caseCashSystem caseCase = new caseCashSystem(); //initlialize system and students
 
