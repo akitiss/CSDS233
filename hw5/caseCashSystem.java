@@ -180,17 +180,13 @@ public class caseCashSystem{
     not implemented, significant points will be deducted. Corresponds to "SORT, name".
     */
     public List<String> sortName(){
-        if (students.size() <= 1){ //if student list is empty or only one element
-            return null;
-        } else {
-            List<String> arr = new ArrayList<>();
-            for (Student stu : students){
-                arr.add(stu.getName());
-            }
-            mergeSort(arr, 0, students.size()-1);
-
-            return arr; 
+        List<String> arr = new ArrayList<>(); //create new arraylist 
+        for (Student stu : students){ //copy all values over to list since it says to return a list, not modify the current one 
+            arr.add(stu.getName());
         }
+        mergeSort(arr, 0, students.size()-1);
+
+        return arr; //return sorted array 
     }
 
     //helper function to do the merge sort recursivly 
@@ -207,12 +203,13 @@ public class caseCashSystem{
 
     }
 
+    //merges the lists in order 
     private void merge(List<String> arr, int leftStart, int leftEnd, int rightStart, int rightEnd){
 
         int l = leftStart; // left sublist index
         int r = rightStart; // right sublist index
 
-        List<String> temp = new ArrayList<>();
+        List<String> temp = new ArrayList<>(); //create temp list 
 
         while (l <= leftEnd && r <= rightEnd) { //before reaches end of sublists
             String nameL = arr.get(l);
@@ -262,7 +259,15 @@ public class caseCashSystem{
     be changed at all. Corresponds to "WITHDRAWAL, studentA, amount".
     */
     public boolean withdrawal(Student student, int amount){
-        return false;
+        if (amount < 0){ //check if withdrawl amount is negative
+            return false;
+        } else if (student.getBalance() - amount < 0){ //check if student has enough money in account  
+            return false;
+        } else {
+            int newBalance = student.getBalance() - amount; //update balance 
+            student.updateBalance(newBalance);
+            return true;
+        }
     }
 
 
@@ -289,11 +294,32 @@ public class caseCashSystem{
                                         "TRANSFER, Sanji, Zoro, 100", //true
                                         "GET, Sanji", //100
                                         "GET, Zoro", //101
-                                        "SORT, name" //["Law, Luffy, Sanji, Zoro"]
+                                        "WITHDRAWAL, Zoro, 1", //true
+                                        "GET, Zoro", //100
+                                        "WITHDRAWAL, Zoro, 200", //false
+                                        "WITHDRAWAL, Zoro, 0", //true
+                                        "GET, Zoro", //100
+                                        "WITHDRAWAL, Zoro, -10", //false
+                                        "GET, Zoro" //100
                                         );
 
         List<String> outputs = caseCase.runSimulation(inputs);
         System.out.println(outputs);
+
+        inputs = List.of("SORT, name", //[]
+                            "INIT, Sanji, 200", //true
+                            "SORT, name", //["Sanji"]
+                            "INIT, Law, 400", //true
+                            "SORT, name", //["Law, Sanji"]
+                            "INIT, Zoro, 0", //true
+                            "INIT, Buggy, 0", //true
+                            "INIT, Luffy, 500", //true
+                            "SORT, name" //["Buggy, Law, Luffy, Sanji, Zoro"]
+                            );
+
+        outputs = caseCase.runSimulation(inputs);
+        System.out.println(outputs);
+
          
     }
 }
