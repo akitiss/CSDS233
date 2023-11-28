@@ -250,8 +250,58 @@ public class caseCashSystem{
     Corresponds to "SORT, balance"
     */
     public List<String> sortBalance(){
-        return null;
+        List<Student> arr = new ArrayList<>(); //create new arraylist 
+        arr = students; 
+
+        quickSort(arr, 0, arr.size() - 1);
+
+        List<String> newArr = new ArrayList<>(); //convert to a String List
+        for (Student element: arr){
+            newArr.add(element.getName());
+        }
+        return newArr; //return sorted array 
+
     }
+
+    static void quickSort(List<Student> arr, int first, int last) {
+        if (first >= last){ //base case
+            return;
+        } 
+
+        int split = partition(arr, first, last); //get index of pivot  
+        
+        quickSort(arr, first, split - 1); //left and right
+        quickSort(arr, split + 1, last);
+
+    }
+
+    static int partition(List<Student> arr, int first, int last){
+        int pivot = arr.get((first + last)/2).getBalance(); //set pivot as the middle index 
+
+        int i = first ; // left index
+        int j = last ; // right index 
+        
+        while (i <= j){ //keep going until they cross 
+            while (arr.get(i).getBalance() < pivot){ //keep going until you find a value that is greater than the pivot
+                i++;
+            } 
+            while (arr.get(j).getBalance() > pivot){ //keep going until you find a value that is less than the pivot 
+                j--;
+            }
+
+            if (i <= j){
+                Student temp = arr.get(i); //swap the values 
+                arr.set(i, arr.get(j));
+                arr.set(j, temp);
+                i++;
+                j--;
+            }
+        
+        }
+
+        return i;
+    }
+
 
     /*
     Remove money from a student account. Return true if remove is successful, and return false if
@@ -320,6 +370,32 @@ public class caseCashSystem{
         outputs = caseCase.runSimulation(inputs);
         System.out.println(outputs);
 
-         
+        inputs = List.of("SORT, balance", //[]
+                            "INIT, Sanji, 200", //true
+                            "SORT, balance", //["Sanji"]
+                            "INIT, Law, 500", //true
+                            "SORT, balance", //["Sanji, Law"]
+                            "INIT, Zoro, 0", //true
+                            "INIT, Buggy, 300", //true
+                            "INIT, Luffy, 100", //true
+                            "SORT, balance" //["Zoro, Luffy, Sanji, Buggy, Law"]
+                            );
+
+        outputs = caseCase.runSimulation(inputs);
+        System.out.println(outputs);
+
+        inputs = List.of("INIT, Tammy, 200",
+                            "INIT, Kim, 300",
+                            "INIT, Quyen, 400",
+                            "SORT, name",
+                            "SORT, balance",
+                            "TRANSFER, Kim, Tammy, 100",
+                            "SORT, name",
+                            "SORT balance");
+
+
+        outputs = caseCase.runSimulation(inputs);
+        System.out.println(outputs);
+
     }
 }
