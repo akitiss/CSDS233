@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class AirportSystem{
-    private List<Vertex> connections; //adjacency list of the cities 
+    List<Vertex> connections; //adjacency list of the cities 
 
     //private nested class 
     private class Edge{
@@ -73,7 +73,7 @@ public class AirportSystem{
         //if there is assign that vertex to the var, if not leave null 
         Vertex hasSource = null;
         Vertex hasDestination = null;
-
+        
         //check is edge already exists 
         for (Vertex vertex : connections){
             if (source.equals(vertex.toString())){ //check is source is the same
@@ -89,7 +89,7 @@ public class AirportSystem{
                 hasDestination = vertex;
             }
         }
-
+        
         //else 
 
         //edge pointing both ways since should be a two way 
@@ -148,14 +148,23 @@ public class AirportSystem{
         String graph = "";
 
         for (Vertex vertex : connections){
-            graph += "V" + vertex;
-
+            graph += "V: " + vertex + " | ";
+            List<Edge> edges = vertex.getEdges();
+            for (Edge edge: edges){
+                graph += edge;
+            }
+            graph += "\n";
         }
+
+        System.out.println(graph);
     }
 
     public static void main(String[] args){
-        AirportSystem airport = new AirportSystem(); //initilaize 
+        AirportSystem airport = new AirportSystem(); //initilaize
+        airport.connections = new ArrayList<>();
+
         airport.addEdge("New York", "Cleveland", 365);
+        airport.addEdge("Cleveland", "Chicago", 365);
         airport.printGraph();
 
     } 
