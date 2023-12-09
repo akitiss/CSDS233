@@ -127,24 +127,6 @@ public class AirportSystem{
         return true;
     }
 
-    // //returns int value of cityB if it's adjacent to cityA 
-    // //returns -1 if they aren't adjacent  
-    // private int getAdjacent(String cityA, String cityB){
-    //     int index = 0; //keeps track of where in the connections list the loop is 
-    //     for (Vertex vertex : connections){ //go through all vertex
-    //         if (vertex.toString().equals(cityB)){  
-    //             List<Edge> edges = vertex.getEdges(); 
-    //             for (Edge edge : edges){ //go through all edges in cityB  
-    //                 if (edge.getDestination().equals(cityA)){ //check is cityA and cityB are adjacent 
-    //                     return index; //returns index of cityB 
-    //                 }
-    //             }
-    //         }
-    //         index ++;
-    //     }
-    //     return -1; //if reaches end of loop then cityA and cityB aren't adjacent 
-    // }
-
     //returns dist between adjacent cities  
     //returns infinity if they aren't adjacent  
     private int getDistance(String cityA, String cityB){
@@ -224,7 +206,49 @@ public class AirportSystem{
 
     //Uses Prim’s algorithm to create a minimum spanning tree.
     List<Edge> minimumSpanningTree(){
-        return null;
+        List<Edge> tree = new ArrayList<>(); //min spanning tree
+        List<String> visited = new ArrayList<>(); //all visisted vertex 
+
+        visited.add(connections.get(0).toString()); //use first index as starting vertex 
+        
+        while (visited.size() < connections.size()){ //repeat until reach all nodes 
+            
+            //find min edge 
+            int min = infinity;
+            Edge minEdge = null;
+
+            for (Vertex vertex : connections){ //loop through all vertex 
+                if (visited.contains(vertex.toString())){ //need to find an already visited vertex to check its neighbors  
+                    for (Edge edge : vertex.getEdges()){ 
+                        if (!(visited.contains(edge.getDestination()))){ //if not visisted 
+                            if (edge.getDistance() < min){ //if edge is smaller 
+                                min = edge.getDistance();
+                                minEdge = edge;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (minEdge == null){ //if no more edges 
+                break;
+            }
+
+            visited.add(minEdge.getDestination()); //update visited and tree 
+            tree.add(minEdge);
+        }
+        return tree;
+    }
+
+    //converts a List<Edge> to List<String>
+    //makes it possible to compare minimumspanningtree with its expected output in the junit test since Edge is a private class 
+    public List<String> listEdgeToString(List<Edge> edges){
+        List<String> tree = new ArrayList<>();
+        for (Edge edge : edges){ //loop through all the edges
+            tree.add(edge.toString());
+        }
+
+        return tree;
     }
 
     //Returns a list of all the cities from the start using BFS. This is assuming this start vertex exists. 

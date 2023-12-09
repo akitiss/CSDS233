@@ -5,7 +5,6 @@ import java.util.*;
 
 public class AirportSystemTester{
     @Test
-     
     public void shortestDistanceTester(){
         //test 1 
         AirportSystem airport = new AirportSystem(); //initilaize
@@ -16,7 +15,6 @@ public class AirportSystemTester{
         airport.addEdge("Cleveland", "Chicago", 10);
         airport.addEdge("Chicago", "California", 5);
         airport.addEdge("China", "California", 20);
-        airport.printGraph();
 
         int output = airport.shortestDistance("New York", "Cleveland");
         assertEquals(300, output);
@@ -58,4 +56,73 @@ public class AirportSystemTester{
         assertEquals(143+101+110, output);
 
     }
+
+    @Test 
+    public void minimumSpanningTreeTester(){
+        //test 1 
+        AirportSystem airport = new AirportSystem(); //initilaize
+        airport.connections = new ArrayList<>();
+
+        airport.addEdge("New York", "Cleveland", 300);
+        airport.addEdge("China", "Cleveland", 200);
+        airport.addEdge("Cleveland", "Chicago", 10);
+        airport.addEdge("Chicago", "California", 5);
+        airport.addEdge("China", "California", 20);
+
+        List<String> output = airport.listEdgeToString(airport.minimumSpanningTree()); 
+        //convert to string since cant use List<Edge> since its a private var
+
+        List<String> expected = List.of("[New York, Cleveland]",
+                                        "[Cleveland, Chicago]",
+                                        "[Chicago, California]",
+                                        "[California, China]");
+
+        assertEquals(expected, output);
+
+        //test 2
+        airport = new AirportSystem(); //initilaize
+        airport.connections = new ArrayList<>();
+
+        airport.addEdge("Buffalo", "Cleveland", 191);
+        airport.addEdge("Buffalo", "Pittsburgh", 216);
+        airport.addEdge("Cleveland", "Pittsburgh", 135);
+        airport.addEdge("Pittsburgh", "Columbus", 185);
+        airport.addEdge("Columbus", "Cleveland", 143);
+
+        output = airport.listEdgeToString(airport.minimumSpanningTree()); 
+
+        expected = List.of("[Buffalo, Cleveland]",
+                            "[Cleveland, Pittsburgh]",
+                            "[Cleveland, Columbus]");
+        
+        assertEquals(expected, output);
+
+        //test 3
+        airport = new AirportSystem(); //initilaize
+        airport.connections = new ArrayList<>();
+
+        airport.addEdge("Cleveland", "Toledo", 117);
+        airport.addEdge("Toledo", "Cincinnati", 198);
+        airport.addEdge("Cincinnati", "Indianapolis", 110);
+        airport.addEdge("Indianapolis", "Chicago", 181);
+        airport.addEdge("Chicago", "Toledo", 244);
+        airport.addEdge("Chicago", "Detroit", 281);
+        airport.addEdge("Detroit", "Toledo", 60);
+        airport.addEdge("Columbus", "Cincinnati", 101);
+        airport.addEdge("Columbus", "Cleveland", 143);
+        
+        output = airport.listEdgeToString(airport.minimumSpanningTree()); 
+
+        expected = List.of("[Cleveland, Toledo]",
+                            "[Toledo, Detroit]",
+                            "[Cleveland, Columbus]",
+                            "[Columbus, Cincinnati]",
+                            "[Cincinnati, Indianapolis]",
+                            "[Indianapolis, Chicago]");
+        
+        assertEquals(expected, output);
+
+
+    }
+
 }
