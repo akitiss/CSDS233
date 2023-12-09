@@ -1,8 +1,8 @@
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class AirportSystem{
     List<Vertex> connections; //adjacency list of the cities 
+    private int infinity = Integer.MAX_VALUE; //creating value of infinity for easy access
 
     //private nested class 
     private class Edge{
@@ -32,6 +32,12 @@ public class AirportSystem{
         public String getDestination(){
             return destination;
         }
+
+        //return distance
+        public int getDistance(){
+            return distance;
+        }
+
 
     }
     
@@ -121,9 +127,102 @@ public class AirportSystem{
         return true;
     }
 
+    // //returns int value of cityB if it's adjacent to cityA 
+    // //returns -1 if they aren't adjacent  
+    // private int getAdjacent(String cityA, String cityB){
+    //     int index = 0; //keeps track of where in the connections list the loop is 
+    //     for (Vertex vertex : connections){ //go through all vertex
+    //         if (vertex.toString().equals(cityB)){  
+    //             List<Edge> edges = vertex.getEdges(); 
+    //             for (Edge edge : edges){ //go through all edges in cityB  
+    //                 if (edge.getDestination().equals(cityA)){ //check is cityA and cityB are adjacent 
+    //                     return index; //returns index of cityB 
+    //                 }
+    //             }
+    //         }
+    //         index ++;
+    //     }
+    //     return -1; //if reaches end of loop then cityA and cityB aren't adjacent 
+    // }
+
+    //returns dist between adjacent cities  
+    //returns infinity if they aren't adjacent  
+    private int getDistance(String cityA, String cityB){
+        if (cityA.equals(cityB)){ //check if its the same city
+            return 0;
+        }
+
+        for (Vertex vertex : connections){ //go through all vertex
+            if (vertex.toString().equals(cityA)){  //check if vertex is cityA 
+                List<Edge> edges = vertex.getEdges(); 
+                for (Edge edge : edges){ //go through all edges in cityA  
+                    if (edge.getDestination().equals(cityB)){ //check is cityA and cityB are adjacent 
+                        return edge.getDistance(); //returns distance between the two cities  
+                    }
+                }
+            }
+        }
+        return infinity; //if reaches end of loop then cityA and cityB aren't adjacent 
+    }
+
+    //returns vertex given the name
+    private Vertex getVertex(String name){
+        for (Vertex vertex : connections){ //loop through all connections
+            if (vertex.toString().equals(name)){
+                return vertex;
+            }
+        }
+        return null; 
+    }
+
+
     //Returns the shortest distance between city A and city B using Dijkstra’s algorithm
     int shortestDistance(String cityA, String cityB){
-        return 0;
+        Map<String, Integer> distances = new HashMap<>(); //map distances 
+        List<String> visited = new ArrayList<>(); //record all visited 
+
+        for (Vertex vertex : connections){ //initlize distances for all values
+            distances.put(vertex.toString(), infinity);   
+        }
+
+        distances.put(cityA, 0);
+
+        while (!(visited.contains(cityB))){ //loop through all values until cityB is reached 
+            String current = null; //current city in loop      
+
+            int min = infinity; //find city with min value 
+            for (String city : distances.keySet()) { //loop through all cities 
+                if (!(visited.contains(city))){ //check if vertex has been visited 
+                    int value = distances.get(city);
+                    if (value < min) { //check if value is smaller
+                        min = value;
+                        current = city;
+                    }
+                }
+            }
+
+            visited.add(current); //add city with min to current
+
+            if (current == null){ //cant reach veritices 
+                break;
+            }
+            
+            //update distances in comparison to current vertex
+            List<Edge> edges = getVertex(current).getEdges(); //get all edges of vertex
+            for (Edge edge : edges){  //loop through all edges 
+                if (!(visited.contains(edge.getDestination()))){ //check if vertex has been visited 
+                    String vertex = edge.getDestination();
+                    int newDist = distances.get(current) + edge.getDistance(); //get new distance 
+                    if (newDist < distances.get(vertex)){
+                        distances.put(vertex, newDist);
+                    }
+                } 
+            }
+        }
+
+        return distances.get(cityB);
+
+
     }
 
     //Uses Prim’s algorithm to create a minimum spanning tree.
@@ -164,7 +263,9 @@ public class AirportSystem{
         airport.connections = new ArrayList<>();
 
         airport.addEdge("New York", "Cleveland", 365);
-        airport.addEdge("Cleveland", "Chicago", 365);
+        airport.addEdge("Cleveland", "Chicago", 10);
+        airport.addEdge("China", "California", 20);
+        airport.addEdge("China", "California", 500);
         airport.printGraph();
 
     } 
