@@ -184,8 +184,7 @@ public class AirportSystem{
         for (Vertex vertex : connections){ //initlize distances for all values
             distances.put(vertex.toString(), infinity);   
         }
-
-        distances.put(cityA, 0);
+        distances.put(cityA, 0); //overwrite cityA value with 0 
 
         while (!(visited.contains(cityB))){ //loop through all values until cityB is reached 
             String current = null; //current city in loop      
@@ -213,7 +212,7 @@ public class AirportSystem{
                 if (!(visited.contains(edge.getDestination()))){ //check if vertex has been visited 
                     String vertex = edge.getDestination();
                     int newDist = distances.get(current) + edge.getDistance(); //get new distance 
-                    if (newDist < distances.get(vertex)){
+                    if (newDist < distances.get(vertex)){ //if new distance is less than the old distance 
                         distances.put(vertex, newDist);
                     }
                 } 
@@ -221,8 +220,6 @@ public class AirportSystem{
         }
 
         return distances.get(cityB);
-
-
     }
 
     //Uses Prim’s algorithm to create a minimum spanning tree.
