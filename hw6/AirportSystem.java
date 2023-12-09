@@ -254,7 +254,42 @@ public class AirportSystem{
     //Returns a list of all the cities from the start using BFS. This is assuming this start vertex exists. 
     //Order of the cities in the same level does not matter.
     List<String> breadthFirstSearch(String start){
-        return null;
+        List<String> output = new ArrayList<>();
+        List<String> visited = new ArrayList<>();
+        Queue<String> queue = new LinkedList<>(); //use queue 
+
+        visited.add(start);
+        queue.add(start);
+
+        while (!(queue.isEmpty())){ //while queue still has stuff 
+            String current = queue.peek(); //get head 
+            queue.remove(current); //remove current head 
+            output.add(current); 
+            
+            Vertex vertex = getVertex(current);
+            List<Edge> edges = vertex.getEdges();
+            for (Edge edge : edges){ //gets all edges of the current vertex 
+                String dest = edge.getDestination();
+                if (!(visited.contains(dest))){ //if isnt visisted 
+                    visited.add(dest);
+                    queue.add(dest);
+                }
+            }
+
+        }
+
+        return output;
+    }
+
+    //prints out List<String> in a readbale format 
+    void printListString(List<String> input){
+        String output = "[";
+        for (String city : input){ //loop through all the cities
+            output += city + ", ";
+        }
+        output = output.substring(0,output.length()-2); //remove comma
+        output += "]";
+        System.out.println(output);
     }
 
     //Prints the graph in a readable format and it is clear which edge belongs to which vertex.
@@ -288,6 +323,29 @@ public class AirportSystem{
         airport.addEdge("China", "California", 20);
         airport.addEdge("China", "California", 500);
         airport.printGraph();
+
+        //test for BFS
+        airport = new AirportSystem(); //initilaize
+        airport.connections = new ArrayList<>();
+
+        airport.addEdge("Buffalo", "Cleveland", 191);
+        airport.addEdge("Buffalo", "Pittsburgh", 216);
+        airport.addEdge("Cleveland", "Pittsburgh", 135);
+        airport.addEdge("Pittsburgh", "Columbus", 185);
+        airport.addEdge("Columbus", "Cleveland", 143);
+        airport.addEdge("Cleveland", "Toledo", 117);
+        airport.addEdge("Toledo", "Cincinnati", 198);
+        airport.addEdge("Cincinnati", "Indianapolis", 110);
+        airport.addEdge("Indianapolis", "Chicago", 181);
+        airport.addEdge("Chicago", "Toledo", 244);
+        airport.addEdge("Chicago", "Detroit", 281);
+        airport.addEdge("Detroit", "Toledo", 60);
+        airport.addEdge("Columbus", "Cincinnati", 101);
+
+        List<String> bfs = airport.breadthFirstSearch("Cincinnati");
+        airport.printListString(bfs);
+
+
 
     } 
     

@@ -22,7 +22,7 @@ public class AirportSystemTester{
         assertEquals(35, output);
 
         //test 2
-        airport = new AirportSystem(); //initilaize
+        airport = new AirportSystem(); //reset 
         airport.connections = new ArrayList<>();
 
         airport.addEdge("Buffalo", "Cleveland", 191);
@@ -37,7 +37,7 @@ public class AirportSystemTester{
         assertEquals(0, output);
 
         //test 3
-        airport = new AirportSystem(); //initilaize
+        airport = new AirportSystem(); //reset
         airport.connections = new ArrayList<>();
 
         airport.addEdge("Cleveland", "Toledo", 117);
@@ -80,7 +80,7 @@ public class AirportSystemTester{
         assertEquals(expected, output);
 
         //test 2
-        airport = new AirportSystem(); //initilaize
+        airport = new AirportSystem(); //reset
         airport.connections = new ArrayList<>();
 
         airport.addEdge("Buffalo", "Cleveland", 191);
@@ -98,7 +98,7 @@ public class AirportSystemTester{
         assertEquals(expected, output);
 
         //test 3
-        airport = new AirportSystem(); //initilaize
+        airport = new AirportSystem(); //reset
         airport.connections = new ArrayList<>();
 
         airport.addEdge("Cleveland", "Toledo", 117);
